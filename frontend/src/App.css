@@ -1,0 +1,524 @@
+:root {
+    --dark-colour: #212529;
+    --light-colour: #ffffff;
+}
+/* 
+@font-face {
+    font-family: Circular;
+    src: url(/fonts/Circular/CircularStd-Book.otf);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Circular;
+    src: url(/fonts/Circular/CircularStd-Medium.otf);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Circular;
+    src: url(/fonts/Circular/CircularStd-Black.otf);
+    font-weight: 900;
+}
+
+@font-face {
+    font-family: CircularItalic;
+    src: url(/fonts/Circular/CircularStd-BookItalic.otf);
+    font-weight: 300;
+} */
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: Circular, calibri, sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    color: var(--dark-colour);
+    font-weight: 300;
+    height: 100%;
+    background-color: #f9f8f5;
+    overflow-x: hidden;
+    font-size: 18px;
+}
+* {
+    box-sizing: border-box;
+}
+
+ul {
+    padding: 0;
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: #111;
+}
+
+.container {
+    max-width: 980px;
+    margin: auto;
+    display: flex;
+    gap: 16px;
+    position: relative;
+}
+.main .container {
+    justify-content: center;
+}
+
+.main {
+    min-height: 800px;
+}
+
+.register input {
+    display: block;
+}
+
+.user {
+    margin: 200px auto auto auto;
+    text-align: center;
+    display: block;
+    max-width: 720px;
+}
+
+form .register {
+    margin: auto;
+    display: block;
+}
+
+input {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    padding: 0 0.5em 0 0.5em;
+    font-family: Segoe UI, calibri, sans-serif;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.04);
+    font-size: 1em;
+    outline: none;
+}
+
+nav {
+    width: 100%;
+    background-color: var(--light-colour);
+    padding: 0;
+    position: relative;
+    display: block;
+}
+
+.navbar {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    min-height: 60px;
+}
+
+.logout {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+}
+.logout-icon {
+    height: 20px;
+}
+
+.logout-icon:hover {
+    height: 22px;
+    position: absolute;
+    right: 15px;
+    top: 14px;
+}
+
+.title {
+    margin-right: auto;
+}
+
+.nav ul {
+    line-height: 50px;
+    margin: 0;
+}
+
+.nav li {
+    display: inline-block;
+    height: 50px;
+    width: auto;
+}
+
+.nav li:hover {
+    cursor: pointer;
+}
+
+.nav li a {
+    display: inline-block;
+    min-width: 100px;
+    height: 100%;
+    text-align: center;
+}
+
+.nav li a:hover {
+    outline: 1px solid lightgrey;
+}
+
+.nav li a .dropdown-button:hover {
+    outline: 1px solid lightgrey;
+}
+
+footer {
+    min-height: 200px;
+    background-color: var(--dark-colour);
+    padding: 40px 0 0 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.footer-copyright {
+    font-weight: 600;
+}
+
+.footer-copyright p {
+    color: var(--light-colour);
+    font-size: 16px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    height: 100%;
+}
+
+.grey {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 2;
+    display: none;
+    background-color: grey;
+    transition: background-color 1s;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--light-colour);
+    z-index: 1;
+    width: auto;
+}
+
+.dropdown-content a {
+    display: block;
+    text-align: left;
+    padding: 0 20px;
+}
+
+.dropdown-content a:hover {
+    background-color: lightgrey;
+}
+
+.dropdown:hover .dropdown-content,
+.dropdown:hover .dropdown-button {
+    display: block;
+    outline: 1px solid lightgrey;
+}
+
+.container-left {
+    display: inline-block;
+    width: 300px;
+    overflow: hidden;
+    vertical-align: top;
+}
+
+.profile-picture img,
+.user-picture img {
+    width: 100%;
+    display: block;
+    border-radius: 50%;
+}
+
+.profile-picture {
+    display: inline-block;
+    margin: 0;
+    height: 64px;
+    width: 64px;
+    position: relative;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+
+.info-container-top {
+    height: 80px;
+    margin-left: 0.5em;
+}
+
+.user-picture {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 18px 0 0;
+    width: 48px;
+    position: relative;
+}
+
+.overlay {
+    opacity: 0;
+    background-color: grey;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.overlay h3 {
+    font-size: 14px;
+    color: var(--light-colour);
+    font-weight: bold;
+    text-align: center;
+    line-height: 64px;
+}
+
+.profile-picture:hover .overlay {
+    opacity: 0.8;
+}
+
+.user-bar {
+    background-color: var(--light-colour);
+    border-radius: 5px;
+    padding: 16px;
+    margin: 50px 0 0 0;
+}
+
+.user-stats {
+    padding: 0.5em;
+}
+
+.user-info {
+    display: inline-block;
+    margin: 0 0 0 0.5em;
+    position: relative;
+    top: 50%;
+    transform: translate(0, -90%);
+}
+
+.follow-stats {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 4px;
+    margin: 0 0.5em 0 0.5em;
+    padding: 0 0 0.5em 0;
+    border-bottom: solid 1px lightgrey;
+    text-align: center;
+}
+
+.follow-stats li {
+    border-right: solid 1px lightgrey;
+    padding-right: 4px;
+    flex: 1 1 0;
+}
+
+.follow-stats li:last-child {
+    border: 0;
+    padding: 0;
+}
+
+.map-thumbnail {
+    padding: 1em 0 1em 1.5em;
+}
+
+.follow {
+    margin: 0.5em;
+}
+
+.follow-stats table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.follow-stats td {
+    padding: 5px;
+    text-align: left;
+    border-right: 1px solid lightgrey;
+    border-collapse: collapse;
+    text-transform: uppercase;
+    font-size: 0.8em;
+}
+
+.follow-stats td:last-child {
+    border-right: 0;
+}
+
+.follow-stats h3 {
+    font-weight: 600;
+    font-size: 1em;
+}
+
+.feed {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+}
+
+.feed-select-container {
+    height: 50px;
+    display: flex;
+}
+
+#feedType {
+    width: max-content;
+    margin: 12px 0;
+}
+
+.feed::-webkit-scrollbar {
+    display: none;
+}
+
+.screen-overlay {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: block;
+    z-index: 20;
+    background-color: grey;
+    opacity: 0;
+}
+
+.pop-up {
+    z-index: 100;
+    position: absolute;
+    display: block;
+    width: 300px;
+    height: 0px;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    -webkit-transition: width 0.5s, height 0.5s;
+    overflow: hidden;
+    border: none;
+}
+
+.pop-up-input {
+    transition: 0.5s;
+    display: block;
+}
+
+.pop-up-input input {
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.pop-up label {
+    font-size: 1.25em;
+    font-weight: 500;
+    color: var(--dark-colour);
+    text-align: center;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+}
+
+.post-header {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.post-body {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.activity-type {
+    width: 48px;
+    margin: 0 18px 0 0;
+}
+
+.post-details {
+}
+
+.post-details h2 {
+    font-weight: 600;
+}
+
+.log-stats {
+    display: flex;
+    padding: 0 0 0.5em 0;
+}
+
+.log-stats li {
+    border-right: solid 1px lightgrey;
+    margin: 0 16px 0 0;
+    padding: 0 16px 0 0;
+}
+
+.log-stats li:last-child {
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.map-thumbnail {
+    height: 160px;
+    display: block;
+}
+
+.header-body {
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+}
+
+.log {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.04);
+    margin: 0 0 16px 0;
+    padding: 20px;
+}
+
+.container-right {
+    display: inline-block;
+    width: 800px;
+    vertical-align: top;
+    height: 100%;
+    padding: 1em 0 3em 3em;
+}
+
+input[type="number"] {
+    -webkit-appearance: none;
+}
+
+h2 {
+    font-weight: 500;
+    padding: 0 0 0 0;
+    margin: 0;
+}
+
+p {
+    padding: 0;
+    margin: 0;
+    color: grey;
+    font-size: 0.8em;
+}
+
+h3 {
+    font-weight: 600;
+    font-size: 18px;
+    padding: 0;
+    margin: 0;
+}
+
+#map {
+    position: relative;
+    width: 800px;
+    height: 400px;
+    display: inline-block;
+}
