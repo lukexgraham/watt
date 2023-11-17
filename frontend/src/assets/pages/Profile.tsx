@@ -1,24 +1,31 @@
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
+import Feed from "../components/Feed";
 import { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import * as utils from "../utils/dataFormatting";
+import { useAuth } from "../../App";
 
 const Profile: any = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
     const [activities, setActivities] = useState([]);
+    const { user, login, logout } = useAuth();
+
     useEffect(() => {
         const getFeedActivities = async () => {
             try {
-                const response = await fetch("/api/athlete/1/feed", {
+                const response = await fetch(`/api/athlete/${id}/activities`, {
                     method: "GET",
                 });
-
                 if (response.ok) {
                     const responseData = await response.json();
-                    if (responseData.data) {
-                        setActivities(responseData.data.activities);
+                    if (responseData.error) {
+                        window.location.href = responseData.redirect;
                     }
-                } else {
-                    // Handle errors
-                    console.error("Error getting API.", response.status);
+                    if (responseData.data) {
+                        setActivities(responseData.data);
+                    }
                 }
             } catch (error: any) {
                 console.error("Error:", error.message);
@@ -28,19 +35,12 @@ const Profile: any = () => {
         getFeedActivities();
     }, []);
 
-    const listActivities = activities.map((activity: any) => (
-        <li key={activity.post_id}>
-            {activity.activity_name}
-            <br />
-            {activity.distance}
-        </li>
-    ));
-
     return (
         <>
-            <NavBar />
-            <ul>{listActivities}</ul>
-            <Footer />
+            <div className="profile-banner container">
+                <h1>{user.username ? user.username : null}</h1>
+            </div>
+            <Feed activities={activities} />
         </>
     );
 };

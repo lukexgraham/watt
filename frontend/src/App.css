@@ -1,42 +1,18 @@
 :root {
-    --dark-colour: #212529;
-    --light-colour: #ffffff;
+    --dark-colour: #262626;
+    --light-colour: #f9f9f8;
 }
-/* 
-@font-face {
-    font-family: Circular;
-    src: url(/fonts/Circular/CircularStd-Book.otf);
-    font-weight: 300;
-}
-
-@font-face {
-    font-family: Circular;
-    src: url(/fonts/Circular/CircularStd-Medium.otf);
-    font-weight: 600;
-}
-
-@font-face {
-    font-family: Circular;
-    src: url(/fonts/Circular/CircularStd-Black.otf);
-    font-weight: 900;
-}
-
-@font-face {
-    font-family: CircularItalic;
-    src: url(/fonts/Circular/CircularStd-BookItalic.otf);
-    font-weight: 300;
-} */
 
 body {
     padding: 0;
     margin: 0;
-    font-family: Circular, calibri, sans-serif;
+    font-family: sans-serif;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     color: var(--dark-colour);
     font-weight: 300;
     height: 100%;
-    background-color: #f9f8f5;
+    background-color: var(--light-colour);
     overflow-x: hidden;
     font-size: 18px;
 }
@@ -61,6 +37,7 @@ a {
     max-width: 980px;
     margin: auto;
     display: flex;
+    flex-direction: column;
     gap: 16px;
     position: relative;
 }
@@ -92,7 +69,7 @@ input {
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 5px;
     padding: 0 0.5em 0 0.5em;
-    font-family: Segoe UI, calibri, sans-serif;
+    font-family: sans-serif;
     box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.04);
     font-size: 1em;
     outline: none;
@@ -108,25 +85,55 @@ nav {
 
 .navbar {
     display: flex;
+    flex-direction: row;
     justify-content: right;
     align-items: center;
     min-height: 60px;
 }
 
-.logout {
-    position: absolute;
-    right: 20px;
-    top: 15px;
-}
-.logout-icon {
-    height: 20px;
+.login {
+    margin: auto;
+    display: flex;
+    height: 100vh;
 }
 
-.logout-icon:hover {
-    height: 22px;
-    position: absolute;
-    right: 15px;
-    top: 14px;
+.login-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+    background-color: #fff;
+    min-height: 400px;
+    text-align: center;
+    justify-content: center;
+    min-width: 400px;
+}
+
+.login-inputs {
+    gap: 10px;
+    display: flex;
+    margin: 20px 0;
+    flex-direction: column;
+}
+
+.login button {
+    display: block;
+    padding: 6px;
+}
+
+.logout-button {
+    color: #555;
+    padding: 6px;
+    background-color: #ccc;
+    cursor: pointer;
+    border-radius: 3px;
+    margin: 0 0 0 auto;
+    height: min-content;
+}
+
+.logout-button:hover {
+    color: #111;
+    background-color: #aaa;
 }
 
 .title {
@@ -174,9 +181,6 @@ footer {
 
 .footer-copyright {
     font-weight: 600;
-}
-
-.footer-copyright p {
     color: var(--light-colour);
     font-size: 16px;
 }
@@ -196,6 +200,134 @@ footer {
     display: none;
     background-color: grey;
     transition: background-color 1s;
+}
+
+.profile-banner {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.feed {
+    display: flex;
+    margin: 20px auto;
+    overflow: hidden;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 900px;
+}
+
+.activity {
+    display: flex;
+    flex-direction: column;
+    color: var(--dark-colour);
+    min-height: 300px;
+    background-color: #fbfbfa;
+    padding: 40px 20px;
+    min-width: 280px;
+    min-height: 180px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: 0.15s ease-out;
+    cursor: pointer;
+}
+
+.activity:hover {
+    padding: 30px 15px;
+    background-color: #fffffe;
+    border: 1px solid #f0f0f0;
+}
+
+.side {
+    min-width: 40px;
+    font-size: 14px;
+    margin: 0 10px 0 0;
+}
+
+.side img {
+    overflow: hidden;
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    margin: auto;
+    display: block;
+}
+
+.sport-icon {
+    margin: auto;
+    text-align: center;
+}
+
+.activity-head {
+    display: flex;
+    flex-direction: row;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.username {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.activity-date {
+    font-size: 12px;
+    color: #777;
+}
+
+.activity-body {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0 0 0;
+}
+
+.activity-body h3 {
+    line-height: 18px;
+}
+
+.activity-data {
+    line-height: 14px;
+    display: flex;
+    flex-direction: row;
+    margin: 6px 0 0;
+}
+
+.data-section {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #777;
+    padding: 0 10px 0 0;
+    margin: 0 10px 0 0;
+}
+
+.data-section-head {
+    font-size: 10px;
+    color: #777;
+}
+
+.data-section-data {
+    margin: 2px 0 0 0;
+}
+
+.data-section:last-child {
+    border-right: none;
+}
+
+.activity-start {
+    font-size: 12px;
+    margin: 4px 0 0 0;
+}
+
+.activity-type {
+}
+
+span.activity-type {
+    color: #eee;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 .dropdown-content {
@@ -294,14 +426,6 @@ footer {
     padding: 0.5em;
 }
 
-.user-info {
-    display: inline-block;
-    margin: 0 0 0 0.5em;
-    position: relative;
-    top: 50%;
-    transform: translate(0, -90%);
-}
-
 .follow-stats {
     display: flex;
     flex-direction: row;
@@ -353,30 +477,6 @@ footer {
 .follow-stats h3 {
     font-weight: 600;
     font-size: 1em;
-}
-
-.feed {
-    overflow-y: scroll;
-    overflow-x: hidden;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    max-width: 600px;
-}
-
-.feed-select-container {
-    height: 50px;
-    display: flex;
-}
-
-#feedType {
-    width: max-content;
-    margin: 12px 0;
-}
-
-.feed::-webkit-scrollbar {
-    display: none;
 }
 
 .screen-overlay {
@@ -434,11 +534,6 @@ footer {
 .post-body {
     display: flex;
     flex-wrap: wrap;
-}
-
-.activity-type {
-    width: 48px;
-    margin: 0 18px 0 0;
 }
 
 .post-details {
