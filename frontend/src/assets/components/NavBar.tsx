@@ -10,25 +10,24 @@ const NavBar = () => {
     return (
         <nav id="navigation">
             <div className="navbar container">
-                <Link to={`../athletes/${user.id}`}>{user.username}</Link>
-                <a className="nav-link" href="https://github.com/lukexgraham">
-                    github
-                </a>
-                <a
-                    className="nav-link"
-                    href="https://www.linkedin.com/in/lucas-graham-677228261/"
-                >
-                    linkedin
-                </a>
-                <Link to={"../users"}>
-                    <button className="logout-button">Users</button>
+                <span className="title">watt?</span>
+                <Link to={`../athletes/${user.id}`}>
+                    <span className="nav-item">profile</span>
                 </Link>
-                <p
-                    className="logout-button"
-                    onClick={() => onClicks.handleLogout(logout, navigate)}
-                >
-                    Logout
-                </p>
+                <Link to={"../users"}>
+                    <span className="nav-item">users</span>
+                </Link>
+                <Link to={"../upload"}>
+                    <span className="nav-item">upload</span>
+                </Link>
+                {user.id ? (
+                    <span
+                        className="nav-item"
+                        onClick={() => onClicks.handleLogout(logout, navigate)}
+                    >
+                        logout
+                    </span>
+                ) : null}
             </div>
         </nav>
     );

@@ -1,6 +1,6 @@
-# wattsplease
+# Watt?
 
-Wattsplease is a social and data viewing app for your training.\
+Watt? is a social posting and data viewing app for your training.
 
 ## About
 

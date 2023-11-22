@@ -3,7 +3,7 @@ const app = express();
 const port = 3000;
 const passport = require("passport");
 const session = require("express-session");
-const db = require("./db");
+const db = require("../db");
 
 const auth = require("./routes/auth");
 const user = require("./routes/user");

@@ -4,6 +4,7 @@ import { useAuth } from "../../App";
 
 const Login: any = () => {
     const [formData, setFormData] = useState({ username: "", password: "" });
+    const [errorMessage, setErrorMessage] = useState(null);
     const navigate = useNavigate();
     const { user, login, logout } = useAuth();
 
@@ -30,8 +31,10 @@ const Login: any = () => {
                         `../athletes/${responseData.data.user.athlete_id}`
                     );
                 } else {
-                    console.log(responseData.data.message);
+                    setErrorMessage(responseData.data.message);
                 }
+            } else {
+                setErrorMessage("Error with login");
             }
         } catch (error) {
             console.log(error);
@@ -49,10 +52,6 @@ const Login: any = () => {
     return (
         <>
             <div className="container">
-                <nav>
-                    <p style={{ textAlign: "left" }}>hello</p>
-                    <Link to={"/register"}>register</Link>
-                </nav>
                 <div className="login">
                     <div className="login-box">
                         <div className="login-inputs">
@@ -71,6 +70,7 @@ const Login: any = () => {
                                 placeholder="password"
                                 onChange={handleInputChange}
                             />
+                            {errorMessage ? <span>{errorMessage}</span> : null}
                         </div>
                         <button onClick={handleLogin}>submit</button>
                     </div>

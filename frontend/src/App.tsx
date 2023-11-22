@@ -8,6 +8,7 @@ import {
     BrowserRouter,
 } from "react-router-dom";
 import "./App.css";
+
 import Login from "./assets/pages/Login";
 import Home from "./assets/pages/Root";
 import NotFound from "./assets/pages/NotFound";
@@ -15,6 +16,8 @@ import Profile from "./assets/pages/Profile";
 import Root from "./assets/pages/Root";
 import Register from "./assets/pages/Register";
 import UserList from "./assets/pages/UserList";
+import CreateActivity from "./assets/pages/CreateActivity";
+import Activity from "./assets/pages/Activity";
 
 const userContext = createContext({
     user: { username: null, id: null },
@@ -53,6 +56,11 @@ function App() {
                             <Route path="home" element={<Home />} />
                             <Route path="athletes/:id" element={<Profile />} />
                             <Route path="users" element={<UserList />} />
+                            <Route path="upload" element={<CreateActivity />} />
+                            <Route
+                                path="activities/:id"
+                                element={<Activity />}
+                            />
                         </Route>
                         <Route path="*" element={<NotFound />} />
                     </Routes>

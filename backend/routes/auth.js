@@ -4,7 +4,7 @@ const LocalStrategy = require("passport-local");
 const session = require("express-session");
 const crypto = require("crypto");
 
-const db = require("../db");
+const db = require("../../db");
 
 const router = express.Router();
 router.use(express.json());
@@ -31,24 +31,17 @@ passport.use(
             } else {
                 return done(null, false, { message: "Incorrect Password" });
             }
-            crypto.pbkdf2(
-                password,
-                row.username,
-                310000,
-                32,
-                "sha256",
-                function (err, hashedPassword) {
-                    if (err) {
-                        return cb(err);
-                    }
-                    if (!crypto.timingSafeEqual(row.password, password)) {
-                        return done(null, false, {
-                            message: "Incorrect username or password.",
-                        });
-                    }
-                    return done(null, row);
+            crypto.pbkdf2(password, row.username, 310000, 32, "sha256", function (err, hashedPassword) {
+                if (err) {
+                    return cb(err);
                 }
-            );
+                if (!crypto.timingSafeEqual(row.password, password)) {
+                    return done(null, false, {
+                        message: "Incorrect username or password.",
+                    });
+                }
+                return done(null, row);
+            });
         } catch (error) {
             console.log(error);
         }
@@ -57,15 +50,24 @@ passport.use(
 
 router.post(
     "/login/password",
-    passport.authenticate("local", { failureMessage: true }),
-    async (req, res) => {
-        res.status(200).json({
-            data: {
-                success: true,
-                message: "Sucessfully logged in",
-                user: req.user,
-            },
-        });
+    passport.authenticate("local", {
+        failureMessage: true,
+    }),
+    (req, res) => {
+        if (req.user) {
+            res.status(200).json({
+                data: {
+                    success: true,
+                    message: "Sucessfully logged in",
+                    user: req.user,
+                },
+            });
+        } else {
+            res.json({
+                data: { success: false },
+                message: "Login failed",
+            });
+        }
     }
 );
 
@@ -79,14 +81,6 @@ router.post("/register/password", async (req, res) => {
         });
     } else {
         res.json({ data: { success: false, message: "Failure" } });
-    }
-});
-
-router.get("/protected", async (req, res) => {
-    if (req.isAuthenticated()) {
-        res.send("protected");
-    } else {
-        res.send("fuckoff");
     }
 });
 
