@@ -38,6 +38,36 @@ const Activity = () => {
                 data: geoJson,
             });
 
+            map.current?.addSource("start", {
+                type: "geojson",
+                data: {
+                    type: "Feature",
+                    geometry: {
+                        type: "Point",
+                        coordinates: geoJson.geometry.coordinates[0],
+                    },
+                    properties: {
+                        title: "Start",
+                        description: "Starting Location",
+                    },
+                },
+            });
+
+            map.current?.addSource("end", {
+                type: "geojson",
+                data: {
+                    type: "Feature",
+                    geometry: {
+                        type: "Point",
+                        coordinates: geoJson.geometry.coordinates[geoJson.geometry.coordinates.length - 1],
+                    },
+                    properties: {
+                        title: "End",
+                        description: "Ending Location",
+                    },
+                },
+            });
+
             map.current?.addLayer({
                 id: "lineTrack",
                 type: "line",
@@ -45,6 +75,26 @@ const Activity = () => {
                 paint: {
                     "line-color": "#ee8822",
                     "line-width": 3,
+                },
+            });
+
+            map.current?.addLayer({
+                id: "end-circle",
+                type: "circle",
+                source: "end",
+                paint: {
+                    "circle-radius": 10,
+                    "circle-color": "#ff3311",
+                },
+            });
+
+            map.current?.addLayer({
+                id: "start-circle",
+                type: "circle",
+                source: "start",
+                paint: {
+                    "circle-radius": 10,
+                    "circle-color": "#77ee22",
                 },
             });
         });
@@ -58,19 +108,32 @@ const Activity = () => {
 
             if (response.ok) {
                 const responseData = await response.json();
+
+                if (!responseData.success) throw new Error(responseData.error);
+
                 setActivityData(responseData.data);
                 const stravaId = responseData.data.strava_id;
-                const streamResponse = await fetch(`/api/activity/${stravaId}/getDataStream`);
+                const streamResponse = stravaId
+                    ? await fetch(`/api/activity/${stravaId}/getStravaDataStream`)
+                    : await fetch(`/api/activity/${id}/getDataStream`);
 
                 if (streamResponse.ok) {
                     const streamData = await streamResponse.json();
+                    let coords;
+
+                    if (!stravaId) {
+                        const ok = streamData.data.map((str: any) => JSON.parse(str));
+                        coords = ok.map(({ lat, lon }: { lat: number; lon: number }) => [lon, lat]);
+                    } else {
+                        coords = streamData.data.latlng.data.map(([Lat, Lng]: [Lat: number, Lng: number]) => [Lng, Lat]);
+                    }
 
                     const newGeoJson = {
                         type: "Feature",
                         properties: {},
                         geometry: {
                             type: "LineString",
-                            coordinates: streamData.data.latlng.data.map(([Lat, Lng]: [number, number]) => [Lng, Lat]),
+                            coordinates: coords,
                         },
                     };
 

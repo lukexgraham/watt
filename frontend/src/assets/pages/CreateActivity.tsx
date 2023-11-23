@@ -1,10 +1,11 @@
-import { ChangeEventHandler, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../../App";
 import { useNavigate } from "react-router-dom";
 import * as utils from "../utils/gpsHandling";
+import Loading from "../components/Loading";
 
 const CreateActivity = () => {
-    const { user, login, logout } = useAuth();
+    const { user } = useAuth();
     const [formData, setFormData] = useState({
         distance: "",
         duration: "",
@@ -15,9 +16,10 @@ const CreateActivity = () => {
     });
 
     const navigate = useNavigate();
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string>("");
     const [gpsFile, setGpsFile] = useState<any>(null);
     const [gpsFileName, setGpsFileName] = useState<string>("");
+    const [status, setStatus] = useState<string | null>(null);
 
     const handleInputChange = (event: any) => {
         const { name, value } = event.target;
@@ -42,8 +44,10 @@ const CreateActivity = () => {
 
     const handleUpload = async () => {
         try {
+            setStatus("submitting");
+
             const gpsOptions: [string, object] = [
-                `api/activity/gpxupload`,
+                `api/activity/${user.id}/gpxupload`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -65,28 +69,21 @@ const CreateActivity = () => {
                 },
             ];
 
-            const response = await fetch(...gpsOptions);
+            const response = gpsFile ? await fetch(...gpsOptions) : await fetch(...manualOptions);
 
-            if (response.ok) {
-                const responseData = await response.json();
-                if (responseData.success) {
-                    const coords = responseData.data.gpx.trk[0];
-                    const points = utils.convertGPXData(coords);
+            const responseData = await response.json();
 
-                    const speedThreshold = 5; // Adjust as needed
-                    const movingTime = utils.calculateTotalMovingTime(points, speedThreshold);
+            if (responseData.success) {
+                // const coords = responseData.data.gpx.trk[0];
+                // const points = utils.convertGPXData(coords);
+                // navigate(`../athletes/${user.id}`);
 
-                    const distance = utils.calculateOverallDistance(points);
-
-                    console.log(distance);
-                } else {
-                    console.log(responseData.message);
-                }
-            } else {
-                console.log("error");
-            }
+                console.log(responseData.data);
+            } else throw new Error(responseData.error);
         } catch (error) {
             console.log(error);
+            setErrorMessage(String(error));
+            setStatus("");
         }
     };
 
@@ -148,11 +145,14 @@ const CreateActivity = () => {
                             </select>
                         </>
                     )}
-                    <button onClick={handleUpload}>upload</button>
+                    <button onClick={handleUpload} disabled={status === "submitting"}>
+                        upload
+                    </button>
+                    {status === "submitting" && <Loading size={"20px"} />}
                 </div>
                 <div className="gps-file">
                     <input type="file" onChange={handleFileChange} value={gpsFileName} />
-                    {gpsFile ? (
+                    {gpsFile && (
                         <button
                             onClick={() => {
                                 setGpsFile(null);
@@ -161,7 +161,7 @@ const CreateActivity = () => {
                         >
                             X
                         </button>
-                    ) : null}
+                    )}
                 </div>
             </div>
         </>

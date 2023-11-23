@@ -4,7 +4,7 @@ import * as onClicks from "../utils/onClicks";
 import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
-    const { user, login, logout } = useAuth();
+    const { user, logout } = useAuth();
     const navigate = useNavigate();
 
     return (
@@ -21,10 +21,7 @@ const NavBar = () => {
                     <span className="nav-item">upload</span>
                 </Link>
                 {user.id ? (
-                    <span
-                        className="nav-item"
-                        onClick={() => onClicks.handleLogout(logout, navigate)}
-                    >
+                    <span className="nav-item" onClick={() => onClicks.handleLogout(logout, navigate)}>
                         logout
                     </span>
                 ) : null}

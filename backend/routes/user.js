@@ -3,6 +3,7 @@ const express = require("express"),
 
 const db = require("../../db");
 router.use(express.json());
+require("dotenv").config();
 
 router.use((req, res, next) => {
     if (req.isAuthenticated()) {
@@ -32,7 +33,7 @@ router.get("/", async (req, res) => {
     console.log("/");
 });
 
-async function getStravaActivities() {
+async function getStravaActivities(num) {
     const auth_url = "https://www.strava.com/api/v3/oauth/token";
     const activites_url = "https://www.strava.com/api/v3/athlete/activities";
 
@@ -50,7 +51,7 @@ async function getStravaActivities() {
 
     const responseJson = await response.json();
 
-    const APIEndpoint = "https://www.strava.com/api/v3/athlete/activities?per_page=20";
+    const APIEndpoint = `https://www.strava.com/api/v3/athlete/activities?per_page=${num}`;
 
     const data = await fetch(APIEndpoint, {
         method: "GET",
@@ -69,6 +70,19 @@ async function getStravaActivities() {
         console.log("error fetching data...");
     }
 }
+
+router.get("/:id/stats", async (req, res) => {
+    try {
+        const athlete_id = req.params.id;
+        const query = `SELECT u.username, u.athlete_id, COALESCE(array_length(u.followers, 1),0) AS follower_count, COALESCE(array_length(u.following, 1),0) AS following_count, (SELECT COUNT(*) FROM posts WHERE athlete_id = u.athlete_id) AS post_count, COALESCE(SUM(p.distance), 0) AS total_distance, COALESCE(SUM(p.duration), 0) AS total_duration FROM users u LEFT JOIN posts p ON u.athlete_id = p.athlete_id WHERE u.athlete_id = $1 GROUP BY u.username, u.athlete_id, u.followers, u.following;`;
+        const params = [athlete_id];
+        const response = await db.query(query, params);
+
+        if (response.rowCount) res.status(200).json({ success: true, data: response.rows[0] });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error });
+    }
+});
 
 router.get("/users", async (req, res) => {
     try {
@@ -90,16 +104,15 @@ router.get("/users", async (req, res) => {
     }
 });
 
-router.get("/syncStrava", async (req, res) => {
+router.get("/:id/syncStrava/:num", async (req, res) => {
     try {
-        const athlete_id = req.user.athleteID;
-        const response = await getStravaActivities();
+        const athlete_id = req.params.id;
+        const response = await getStravaActivities(req.params.num);
         const values = `${response.data.map((data) => {
             return `(${data.id}, ${athlete_id}, '${data.name}', '${data.location_country}', '${data.start_date}', ${data.distance}, ${data.moving_time}, '${data.type}')`;
         })}`;
         const query = `INSERT INTO posts (strava_id, athlete_id, activity_name, location_country, start_date, distance, duration, sport_type) VALUES ${values}  ON CONFLICT (strava_id) DO NOTHING RETURNING post_id`;
         console.log(query);
-        const result = await db.query(query);
     } catch (error) {
         console.log(error);
     }
@@ -111,10 +124,13 @@ router.get("/:id/activities", async (req, res) => {
         const query =
             "SELECT posts.*, users.username FROM posts JOIN users ON posts.athlete_id = users.athlete_id WHERE posts.athlete_id = $1 ORDER BY start_date DESC";
         const values = [athleteID];
-        const result = await db.query(query, values);
-        res.status(200).json({ data: result.rows });
+        const response = await db.query(query, values);
+
+        if (response.rows) {
+            res.status(200).json({ success: true, data: response.rows });
+        } else throw new Error(`Failed to retrieve posts for this user: ${athleteID}`);
     } catch (error) {
-        console.log(error);
+        res.status(500).json({ success: false, error: error });
     }
 });
 
@@ -194,46 +210,6 @@ router.post("/:id/unfollow/:targetID", async (req, res) => {
                     message: "User follow request failed...",
                 },
             });
-        }
-    } catch (error) {
-        console.log(error);
-    }
-});
-
-router.post("/:id/manualupload", async (req, res) => {
-    try {
-        const { distance, duration, title, type, location, date } = req.body;
-        const query =
-            "INSERT INTO posts (athlete_id, activity_name, location_country, distance, duration, sport_type, start_date) VALUES ($1,$2,$3,$4,$5,$6,$7)";
-        const values = [req.params.id, title, location, distance, duration, type, date];
-        const response = await db.query(query, values);
-
-        if (response.rowCount) {
-            res.json({
-                data: { success: true, message: "Uploaded successfully..." },
-            });
-        } else {
-            res.json({ data: { success: false, message: "Upload failed..." } });
-        }
-    } catch (error) {
-        console.log(error);
-    }
-});
-
-router.post("/:id/manualupload", async (req, res) => {
-    try {
-        const { distance, duration, title, type, location, date } = req.body;
-        const query =
-            "INSERT INTO posts (athlete_id, activity_name, location_country, distance, duration, sport_type, start_date) VALUES ($1,$2,$3,$4,$5,$6,$7)";
-        const values = [req.params.id, title, location, distance, duration, type, date];
-        const response = await db.query(query, values);
-
-        if (response.rowCount) {
-            res.json({
-                data: { success: true, message: "Uploaded successfully..." },
-            });
-        } else {
-            res.json({ data: { success: false, message: "Upload failed..." } });
         }
     } catch (error) {
         console.log(error);

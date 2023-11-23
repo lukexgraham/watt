@@ -1,12 +1,5 @@
 import { useState, useEffect, createContext, useContext } from "react";
-import {
-    createBrowserRouter,
-    RouterProvider,
-    Link,
-    Routes,
-    Route,
-    BrowserRouter,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Link, Routes, Route, BrowserRouter } from "react-router-dom";
 import "./App.css";
 
 import Login from "./assets/pages/Login";
@@ -51,16 +44,13 @@ function App() {
                 <userContext.Provider value={{ user, login, logout }}>
                     <Routes>
                         <Route path="login" element={<Login />} />
+                        <Route path="register" element={<Register />} />
                         <Route path="/" element={<Root />}>
-                            <Route path="register" element={<Register />} />
                             <Route path="home" element={<Home />} />
                             <Route path="athletes/:id" element={<Profile />} />
                             <Route path="users" element={<UserList />} />
                             <Route path="upload" element={<CreateActivity />} />
-                            <Route
-                                path="activities/:id"
-                                element={<Activity />}
-                            />
+                            <Route path="activities/:id" element={<Activity />} />
                         </Route>
                         <Route path="*" element={<NotFound />} />
                     </Routes>

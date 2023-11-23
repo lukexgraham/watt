@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 const Register: any = ({ getFeed }: any) => {
     const [formData, setFormData] = useState({ username: "", password: "" });
@@ -19,11 +20,11 @@ const Register: any = ({ getFeed }: any) => {
             });
             if (response.ok) {
                 const responseData = await response.json();
-                if (responseData.data.success) {
-                    console.log(responseData.data.message);
+                if (responseData.success) {
+                    console.log(responseData.message);
                     navigate("../login");
                 } else {
-                    console.log(responseData.data.message);
+                    console.log(responseData.message);
                 }
             } else {
                 console.log("didnt reach");
@@ -44,21 +45,16 @@ const Register: any = ({ getFeed }: any) => {
     return (
         <>
             <div className="container">
-                <h1>Register</h1>
-                <div className="login-box">
-                    <input
-                        type="text"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleInputChange}
-                    />
-                    <button onClick={handleRegistration}></button>
+                <div className="login">
+                    <div className="login-box">
+                        <div className="login-inputs">
+                            <h1>Register</h1>
+                            <input type="text" name="username" value={formData.username} onChange={handleInputChange} />
+                            <input type="password" name="password" value={formData.password} onChange={handleInputChange} />
+                        </div>
+                        <button onClick={handleRegistration}>submit</button>
+                        <Link to={"/login"}>login</Link>
+                    </div>
                 </div>
             </div>
         </>

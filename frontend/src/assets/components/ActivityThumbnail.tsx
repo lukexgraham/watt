@@ -1,7 +1,7 @@
 import * as utils from "../utils/dataFormatting";
 import { useNavigate } from "react-router-dom";
 
-const ActivityThumbnail = ({ activity }: any) => {
+const ActivityThumbnail = ({ activity }) => {
     const navigate = useNavigate();
 
     const handleActivitySelect = async (id: number) => {
@@ -37,9 +37,13 @@ const ActivityThumbnail = ({ activity }: any) => {
                                 <span className="data-section-head">Distance</span>
                                 <span className="data-section-data">{utils.metresToKM(activity.distance)}km</span>
                             </div>
+                            <div className="data-section">
+                                <span className="data-section-head">Pace</span>
+                                <span className="data-section-data">{utils.getPace(activity.distance, activity.duration)}/km</span>
+                            </div>
                         </div>
                     </div>
-                    {activity.strava_id ? <p style={{ color: "#ee8822" }}>strava</p> : null}
+                    {activity.strava_id ? <p style={{ color: "#ee8822" }}>Retrieved from Strava</p> : null}
                 </div>
             </div>
         </div>

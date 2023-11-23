@@ -1,7 +1,7 @@
-const Loading = () => {
+const Loading = ({ size }: { size: string }) => {
     return (
         <div className="loading">
-            <span className="loader"></span>
+            <span className="loader" style={{ height: size, width: size }}></span>
         </div>
     );
 };

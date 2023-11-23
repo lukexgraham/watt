@@ -26,13 +26,16 @@ CREATE TABLE posts (
 
 CREATE TABLE streams (
     stream_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
-    post_id INT
-    coords 
-    elevation
-    power
-    hr
-    time
-    cadence
+    post_id INT,
+    coords VARCHAR(25) [],
+    elevation INT [],
+    power SMALLINT [],
+    hr SMALLINT [],
+    time DATE [],
+    cadence SMALLINT [],
+    CONSTRAINT fk_post
+      FOREIGN KEY(post_id)
+      REFERENCES posts(post_id)
 )
 
 INSERT INTO posts (athlete_id, activity_name, activity_date, distance) VALUES (1, 'Jog to the shops', '2023-11-09', 7);
