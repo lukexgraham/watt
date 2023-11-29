@@ -9,6 +9,8 @@ interface userStats {
     post_count: number;
     total_distance: number;
     total_duration: number;
+    latest_activity_name: string;
+    latest_activity_start_date: string;
 }
 
 const ProfileBar = ({ id }: { id: string }) => {
@@ -21,6 +23,8 @@ const ProfileBar = ({ id }: { id: string }) => {
         post_count: 0,
         total_distance: 0,
         total_duration: 0,
+        latest_activity_name: "",
+        latest_activity_start_date: "",
     });
 
     useEffect(() => {
@@ -63,6 +67,11 @@ const ProfileBar = ({ id }: { id: string }) => {
                     <p>Activities</p>
                     <span>{userStats.post_count}</span>
                 </div>
+            </div>
+            <div className="profile-bar-stats">
+                <p>Latest Activity</p>
+                <h3>{userStats.latest_activity_name}</h3>
+                <p>{utils.ISOtoDate(userStats.latest_activity_start_date)}</p>
             </div>
             <div className="profile-bar-stats">
                 <p>{`Total all time duration: ${utils.secondsToDuration(userStats.total_duration)}`}</p>

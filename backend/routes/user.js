@@ -1,9 +1,11 @@
-const express = require("express"),
-    router = express.Router();
+import express from "express";
+const router = express.Router();
 
-const db = require("../../db");
+import * as db from "../db/index.js";
 router.use(express.json());
-require("dotenv").config();
+
+import dotenv from "dotenv";
+dotenv.config();
 
 router.use((req, res, next) => {
     if (req.isAuthenticated()) {
@@ -11,26 +13,10 @@ router.use((req, res, next) => {
     } else {
         res.json({
             error: "Unauthorized",
-            error_message: "You cannot access this page without logging in.",
+            success: false,
             redirect: "/login",
         });
     }
-});
-
-function checkAuth(req, res, next) {
-    if (req.isAuthenticated()) {
-        next();
-    } else {
-        res.json({
-            error: "Unauthorized",
-            error_message: "You cannot access this page without logging in.",
-            redirect: "/login",
-        });
-    }
-}
-
-router.get("/", async (req, res) => {
-    console.log("/");
 });
 
 async function getStravaActivities(num) {
@@ -74,7 +60,7 @@ async function getStravaActivities(num) {
 router.get("/:id/stats", async (req, res) => {
     try {
         const athlete_id = req.params.id;
-        const query = `SELECT u.username, u.athlete_id, COALESCE(array_length(u.followers, 1),0) AS follower_count, COALESCE(array_length(u.following, 1),0) AS following_count, (SELECT COUNT(*) FROM posts WHERE athlete_id = u.athlete_id) AS post_count, COALESCE(SUM(p.distance), 0) AS total_distance, COALESCE(SUM(p.duration), 0) AS total_duration FROM users u LEFT JOIN posts p ON u.athlete_id = p.athlete_id WHERE u.athlete_id = $1 GROUP BY u.username, u.athlete_id, u.followers, u.following;`;
+        const query = `SELECT u.username, u.athlete_id, COALESCE(array_length(u.followers, 1), 0) AS follower_count, COALESCE(array_length(u.following, 1), 0) AS following_count, COUNT(p.*) AS post_count, COALESCE(SUM(p.distance), 0) AS total_distance, COALESCE(SUM(p.duration), 0) AS total_duration, MAX(p.start_date) AS latest_activity_start_date, MAX(p.activity_name) AS latest_activity_name FROM users u LEFT JOIN posts p ON u.athlete_id = p.athlete_id WHERE u.athlete_id = $1 GROUP BY u.username, u.athlete_id, u.followers, u.following ORDER BY latest_activity_start_date DESC;`;
         const params = [athlete_id];
         const response = await db.query(query, params);
 
@@ -136,19 +122,15 @@ router.get("/:id/activities", async (req, res) => {
 
 router.get("/:id/feed", async (req, res) => {
     try {
-        const result = await db.query(
-            "SELECT posts.* FROM posts WHERE posts.athlete_id = ANY(SELECT unnest(following) FROM users WHERE athlete_id = $1)",
+        const response = await db.query(
+            "SELECT p.*, u.username AS username FROM posts p JOIN users u ON p.athlete_id = u.athlete_id WHERE u.athlete_id IN (SELECT unnest(following) FROM users WHERE athlete_id = $1) ORDER BY p.start_date DESC;",
             [req.params.id]
         );
-        res.status(200).json({
-            success: true,
-            message: "Feed generated successfully.",
-            data: {
-                activities: result.rows,
-            },
-        });
-    } catch (err) {
-        console.log(err);
+        if (response.rows) {
+            res.status(200).json({ success: true, data: response.rows });
+        } else throw new Error("Error fetching activities");
+    } catch (error) {
+        res.json({ success: false, error: error });
     }
 });
 
@@ -216,4 +198,4 @@ router.post("/:id/unfollow/:targetID", async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

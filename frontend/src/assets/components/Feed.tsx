@@ -14,7 +14,7 @@ interface activities {
     sport_type: string;
 }
 
-const Feed = ({ id }: any) => {
+const Feed = ({ id, myActivities }: any) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [activities, setActivities] = useState<[activities]>([
         {
@@ -33,9 +33,13 @@ const Feed = ({ id }: any) => {
     useEffect(() => {
         const getFeedActivities = async () => {
             try {
-                const response = await fetch(`/api/athlete/${id}/activities`, {
-                    method: "GET",
-                });
+                const response = myActivities
+                    ? await fetch(`/api/athlete/${id}/activities`, {
+                          method: "GET",
+                      })
+                    : await fetch(`/api/athlete/${id}/feed`, {
+                          method: "GET",
+                      });
 
                 if (!response.ok) throw new Error("Failed to fetch user feed.");
 
@@ -51,7 +55,7 @@ const Feed = ({ id }: any) => {
             }
         };
         getFeedActivities();
-    }, [id]);
+    }, [id, myActivities]);
 
     return (
         <div className={`feed ${loading ? "" : "open"}`}>

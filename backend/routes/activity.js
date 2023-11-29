@@ -1,9 +1,10 @@
-const express = require("express");
-const db = require("../../db");
-const xml2js = require("xml2js");
-const fs = require("fs");
-require("dotenv").config();
-const utils = require("../utils/gpsHandling");
+import express from "express";
+import * as db from "../db/index.js";
+import xml2js from "xml2js";
+import dotenv from "dotenv";
+import * as utils from "../utils/gpsHandling.js";
+
+dotenv.config();
 
 const router = express.Router();
 router.use(express.json({ limit: "10mb" }));
@@ -31,6 +32,18 @@ async function getStravaAccessToken() {
         return error;
     }
 }
+
+router.use((req, res, next) => {
+    if (req.isAuthenticated()) {
+        next();
+    } else {
+        res.json({
+            error: "Unauthorized",
+            success: false,
+            redirect: "/login",
+        });
+    }
+});
 
 router.get("/:id/getStravaDataStream", async (req, res) => {
     try {
@@ -159,4 +172,4 @@ router.post("/manualupload", async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

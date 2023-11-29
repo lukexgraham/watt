@@ -1,12 +1,12 @@
 // Function to calculate the time difference in hours between two timestamps
-function calculateTimeDifference(startTime, endTime) {
+export function calculateTimeDifference(startTime, endTime) {
     const diffInMilliseconds = endTime - startTime;
     const diffInSeconds = diffInMilliseconds / 1000;
     const diffInHours = diffInSeconds / 3600;
     return diffInSeconds;
 }
 
-function calculateDistance(lat1, lon1, lat2, lon2, elev1 = 0, elev2 = 0) {
+export function calculateDistance(lat1, lon1, lat2, lon2, elev1 = 0, elev2 = 0) {
     const R = 6371000; // Earth radius in metres
     const phi1 = lat1 * (Math.PI / 180);
     const phi2 = lat2 * (Math.PI / 180);
@@ -26,7 +26,7 @@ function calculateDistance(lat1, lon1, lat2, lon2, elev1 = 0, elev2 = 0) {
 }
 
 // Function to calculate the overall distance traveled
-function calculateOverallDistance(coordinates) {
+export function calculateOverallDistance(coordinates) {
     let overallDistance = 0;
 
     for (let i = 0; i < coordinates.length - 1; i++) {
@@ -39,7 +39,7 @@ function calculateOverallDistance(coordinates) {
 }
 
 // Function to calculate the total moving time
-function calculateTotalMovingTime(points, speedThreshold) {
+export function calculateTotalMovingTime(points, speedThreshold) {
     let totalMovingTime = 0;
     for (let i = 0; i < points.length - 1; i++) {
         const { lat: lat1, lon: lon1, elevation: elev1, time: time1 } = points[i];
@@ -57,7 +57,7 @@ function calculateTotalMovingTime(points, speedThreshold) {
     return totalMovingTime;
 }
 
-function convertGPXData(gpxData) {
+export function convertGPXData(gpxData) {
     const trkpts = gpxData.trkseg[0].trkpt;
 
     // Convert each track point to the desired format
@@ -77,5 +77,3 @@ function convertGPXData(gpxData) {
 
     return convertedData;
 }
-
-module.exports = { convertGPXData, calculateDistance, calculateTotalMovingTime, calculateOverallDistance };

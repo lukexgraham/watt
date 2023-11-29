@@ -10,9 +10,9 @@ const CreateActivity = () => {
         distance: "",
         duration: "",
         title: "",
-        type: "Run",
+        type: "",
         location: "United Kingdom",
-        date: null,
+        date: Date.now(),
     });
 
     const navigate = useNavigate();
@@ -71,17 +71,14 @@ const CreateActivity = () => {
 
             const response = gpsFile ? await fetch(...gpsOptions) : await fetch(...manualOptions);
 
+            if (!response.ok) throw new Error("Error creating activity");
+
             const responseData = await response.json();
 
             if (responseData.success) {
-                // const coords = responseData.data.gpx.trk[0];
-                // const points = utils.convertGPXData(coords);
-                // navigate(`../athletes/${user.id}`);
-
-                console.log(responseData.data);
+                navigate(`../athletes/${user.id}`);
             } else throw new Error(responseData.error);
         } catch (error) {
-            console.log(error);
             setErrorMessage(String(error));
             setStatus("");
         }

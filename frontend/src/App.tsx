@@ -43,10 +43,10 @@ function App() {
             <BrowserRouter>
                 <userContext.Provider value={{ user, login, logout }}>
                     <Routes>
+                        <Route index element={<Login />} />
                         <Route path="login" element={<Login />} />
                         <Route path="register" element={<Register />} />
                         <Route path="/" element={<Root />}>
-                            <Route path="home" element={<Home />} />
                             <Route path="athletes/:id" element={<Profile />} />
                             <Route path="users" element={<UserList />} />
                             <Route path="upload" element={<CreateActivity />} />

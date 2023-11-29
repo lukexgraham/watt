@@ -1,13 +1,12 @@
-const express = require("express");
+import express from "express";
 const app = express();
 const port = 3000;
-const passport = require("passport");
-const session = require("express-session");
-const db = require("../db");
+import passport from "passport";
+import session from "express-session";
 
-const auth = require("./routes/auth");
-const user = require("./routes/user");
-const activity = require("./routes/activity");
+import auth from "./routes/auth.js";
+import user from "./routes/user.js";
+import activity from "./routes/activity.js";
 
 app.use(
     session({

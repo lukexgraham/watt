@@ -1,10 +1,10 @@
-const express = require("express");
-const passport = require("passport");
-const LocalStrategy = require("passport-local");
-const session = require("express-session");
-const bcrypt = require("bcrypt");
+import express from "express";
+import passport from "passport";
+import LocalStrategy from "passport-local";
+import session from "express-session";
+import bcrypt from "bcrypt";
 
-const db = require("../../db");
+import * as db from "../db/index.js";
 
 const router = express.Router();
 router.use(express.json());
@@ -104,4 +104,4 @@ passport.deserializeUser((user, cb) => {
     });
 });
 
-module.exports = router;
+export default router;

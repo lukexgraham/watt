@@ -1,22 +1,16 @@
-const { Pool } = require("pg");
+import pkg from "pg";
+const { Pool } = pkg;
 
-const pool = new Pool({
-    user: "postgres",
-    host: "localhost",
-    database: "wattsplease",
-    password: "logmeinplease",
-    port: 5432,
-});
+const pool = new Pool({ user: "postgres", host: "localhost", database: "wattsplease", password: "logmeinplease", port: 5432 });
 
-const query = async (text, params) => {
+export const query = async (text, params) => {
     const start = Date.now();
     const res = await pool.query(text, params);
     const duration = Date.now() - start;
-    //console.log("executed query", { text, duration, rows: res.rowCount });
     return res;
 };
 
-const getClient = async () => {
+export const getClient = async () => {
     const client = await pool.connect();
     const query = client.query;
     const release = client.release;
@@ -40,5 +34,3 @@ const getClient = async () => {
     };
     return client;
 };
-
-module.exports = { query: query, getClient, getClient };
