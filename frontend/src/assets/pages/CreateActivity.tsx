@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useAuth } from "../../App";
 import { useNavigate } from "react-router-dom";
-import * as utils from "../utils/gpsHandling";
 import Loading from "../components/Loading";
+
+const API_URL = import.meta.env.VITE_API_URL || "";
 
 const CreateActivity = () => {
     const { user } = useAuth();
@@ -47,7 +48,7 @@ const CreateActivity = () => {
             setStatus("submitting");
 
             const gpsOptions: [string, object] = [
-                `api/activity/${user.id}/gpxupload`,
+                API_URL + `/api/activity/${user.id}/gpxupload`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -59,7 +60,7 @@ const CreateActivity = () => {
             ];
 
             const manualOptions: [string, object] = [
-                `api/athlete/${user.id}/manualupload`,
+                API_URL + `/api/activity/${user.id}/manualupload`,
                 {
                     method: "POST",
                     headers: {
@@ -102,7 +103,16 @@ const CreateActivity = () => {
                         </>
                     ) : (
                         <>
-                            <label htmlFor="distance">Distance</label>
+                            <label htmlFor="Title">Title</label>
+                            <input
+                                type="text"
+                                placeholder="Activity"
+                                name="title"
+                                id="title"
+                                className="valid"
+                                onChange={handleInputChange}
+                            ></input>
+                            <label htmlFor="distance">Distance (metres)</label>
                             <input
                                 type="number"
                                 placeholder="00"
@@ -112,21 +122,12 @@ const CreateActivity = () => {
                                 onChange={handleInputChange}
                             ></input>
 
-                            <label htmlFor="duration">Duration</label>
+                            <label htmlFor="duration">Duration (seconds)</label>
                             <input
                                 type="number"
                                 placeholder="00"
                                 name="duration"
                                 id="duration"
-                                className="valid"
-                                onChange={handleInputChange}
-                            ></input>
-                            <label htmlFor="Title">Title</label>
-                            <input
-                                type="text"
-                                placeholder="Activity"
-                                name="title"
-                                id="title"
                                 className="valid"
                                 onChange={handleInputChange}
                             ></input>
@@ -145,7 +146,7 @@ const CreateActivity = () => {
                     <button onClick={handleUpload} disabled={status === "submitting"}>
                         upload
                     </button>
-                    {status === "submitting" && <Loading size={"20px"} />}
+                    {status === "submitting" && <Loading size={"40px"} />}
                 </div>
                 <div className="gps-file">
                     <input type="file" onChange={handleFileChange} value={gpsFileName} />

@@ -1,9 +1,8 @@
 import { useState, useEffect, createContext, useContext } from "react";
-import { createBrowserRouter, RouterProvider, Link, Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import "./App.css";
 
 import Login from "./assets/pages/Login";
-import Home from "./assets/pages/Root";
 import NotFound from "./assets/pages/NotFound";
 import Profile from "./assets/pages/Profile";
 import Root from "./assets/pages/Root";

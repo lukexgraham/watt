@@ -1,12 +1,18 @@
 import express from "express";
-const app = express();
-const port = 3000;
+import dotenv from "dotenv";
 import passport from "passport";
 import session from "express-session";
-
+import cors from "cors";
 import auth from "./routes/auth.js";
 import user from "./routes/user.js";
 import activity from "./routes/activity.js";
+
+const app = express();
+dotenv.config();
+
+const port = process.env.SERVER_PORT;
+
+app.use(cors({ credentials: true }));
 
 app.use(
     session({
@@ -19,7 +25,8 @@ app.use(
     })
 );
 
-app.use(passport.authenticate("session"));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/api/athlete", user);
 app.use("/api/activity", activity);

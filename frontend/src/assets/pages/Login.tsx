@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../App";
 
+const API_URL = import.meta.env.VITE_API_URL || "";
+
 const Login: any = () => {
     const [formData, setFormData] = useState<Record<string, string>>({ username: "", password: "" });
     const [errorMessage, setErrorMessage] = useState<string>("");
@@ -13,8 +15,9 @@ const Login: any = () => {
     const handleLogin = async () => {
         try {
             setStatus("submitting");
-            const response = await fetch("api/login/password", {
+            const response = await fetch(API_URL + "/api/login/password", {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -30,9 +33,9 @@ const Login: any = () => {
             if (responseData.success) {
                 login({
                     username: responseData.data.username,
-                    id: responseData.data.athlete_id,
+                    id: responseData.data.id,
                 });
-                navigate(`../athletes/${responseData.data.athlete_id}`);
+                navigate(`../athletes/${responseData.data.id}`);
             } else throw new Error(responseData.error);
         } catch (error) {
             setErrorMessage("Error with login");
@@ -67,7 +70,7 @@ const Login: any = () => {
                     <button onClick={handleLogin} disabled={status === "submitting"}>
                         submit
                     </button>
-                    <Link to={"/Register"}>register</Link>
+                    <Link to={"/register"}>register</Link>
                 </div>
             </div>
         </div>

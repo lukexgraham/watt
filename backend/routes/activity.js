@@ -131,7 +131,7 @@ router.post("/:id/gpxupload", async (req, res) => {
             const type = json.trk.type | null;
             const title = req.body.title;
             const date = time[0];
-            location = "United Kingdom";
+            const location = "United Kingdom";
 
             const query =
                 "INSERT INTO posts (athlete_id, activity_name, location_country, distance, duration, sport_type, start_date) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING post_id";
@@ -156,7 +156,7 @@ router.post("/:id/gpxupload", async (req, res) => {
     }
 });
 
-router.post("/manualupload", async (req, res) => {
+router.post("/:id/manualupload", async (req, res) => {
     try {
         const { distance, duration, title, type, location, date } = req.body;
         const query =

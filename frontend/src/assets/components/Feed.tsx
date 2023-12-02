@@ -2,6 +2,8 @@ import ActivityThumbnail from "./ActivityThumbnail";
 import { useEffect, useState } from "react";
 import Loading from "../components/Loading";
 
+const API_URL = import.meta.env.VITE_API_URL || "";
+
 interface activities {
     post_id: string;
     strava_id: number | null;
@@ -34,11 +36,13 @@ const Feed = ({ id, myActivities }: any) => {
         const getFeedActivities = async () => {
             try {
                 const response = myActivities
-                    ? await fetch(`/api/athlete/${id}/activities`, {
+                    ? await fetch(API_URL + `/api/athlete/${id}/activities`, {
                           method: "GET",
+                          credentials: "include",
                       })
-                    : await fetch(`/api/athlete/${id}/feed`, {
+                    : await fetch(API_URL + `/api/athlete/${id}/feed`, {
                           method: "GET",
+                          credentials: "include",
                       });
 
                 if (!response.ok) throw new Error("Failed to fetch user feed.");

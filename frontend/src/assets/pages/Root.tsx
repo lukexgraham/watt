@@ -9,8 +9,8 @@ const Root: any = () => {
     const { user } = useAuth();
 
     useEffect(() => {
-        if (!user.id) navigate("../login");
-    }, []);
+        //if (user.id == null) navigate("../login");
+    }, [user]);
 
     return (
         <>

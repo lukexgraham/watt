@@ -1,7 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import mapboxgl from "mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
+import * as utils from "../utils/dataFormatting";
 mapboxgl.accessToken = "pk.eyJ1IjoibHVrZWdyYWhhbSIsImEiOiJjbHA3aWM1bnMyMWR6MndvNXhuMHV2aXdsIn0.9h2SYXWhmJIvVkRLtfsGtw";
+
+const API_URL = import.meta.env.VITE_API_URL || "";
 
 const Activity = () => {
     const { id } = useParams();
@@ -102,7 +105,7 @@ const Activity = () => {
 
     const getActivity = async () => {
         try {
-            const response = await fetch(`/api/activity/${id}`, {
+            const response = await fetch(API_URL + `/api/activity/${id}`, {
                 method: "GET",
             });
 
@@ -114,8 +117,8 @@ const Activity = () => {
                 setActivityData(responseData.data);
                 const stravaId = responseData.data.strava_id;
                 const streamResponse = stravaId
-                    ? await fetch(`/api/activity/${stravaId}/getStravaDataStream`)
-                    : await fetch(`/api/activity/${id}/getDataStream`);
+                    ? await fetch(API_URL + `/api/activity/${stravaId}/getStravaDataStream`)
+                    : await fetch(API_URL + `/api/activity/${id}/getDataStream`);
 
                 if (streamResponse.ok) {
                     const streamData = await streamResponse.json();
@@ -157,9 +160,11 @@ const Activity = () => {
         <div className="container">
             <div className="activity-page">
                 <div className="activity-section">
-                    {Object.values(activityData).map((value: any) => (
-                        <span>{value}</span>
-                    ))}
+                    <p>{activityData.username}</p>
+                    <h2>{activityData.activity_name}</h2>
+                    <p>{utils.ISOtoDate(activityData.start_date)}</p>
+                    <span>{utils.secondsToDuration(activityData.duration)}</span>
+                    <span>{utils.metresToKM(activityData.distance)}km</span>
                 </div>
                 <div className="activity-section">
                     <div ref={mapContainer} className="map-container" />

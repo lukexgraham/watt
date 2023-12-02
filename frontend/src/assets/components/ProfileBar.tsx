@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import * as utils from "../utils/dataFormatting";
 
+const API_URL = import.meta.env.VITE_API_URL || "";
+
 interface userStats {
     username: string;
     following_count: number;
@@ -30,7 +32,7 @@ const ProfileBar = ({ id }: { id: string }) => {
     useEffect(() => {
         async function getUserStats() {
             try {
-                const response = await fetch(`/api/athlete/${id}/stats`, { method: "GET" });
+                const response = await fetch(API_URL + `/api/athlete/${id}/stats`, { method: "GET" });
 
                 if (!response.ok) throw new Error("Failed to fetch user stats.");
 

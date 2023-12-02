@@ -1,21 +1,12 @@
 import express from "express";
 import passport from "passport";
 import LocalStrategy from "passport-local";
-import session from "express-session";
 import bcrypt from "bcrypt";
 
 import * as db from "../db/index.js";
 
 const router = express.Router();
 router.use(express.json());
-
-router.use(
-    session({
-        secret: "secret",
-        resave: false,
-        saveUninitialized: true,
-    })
-);
 
 passport.use(
     new LocalStrategy(async (username, password, done) => {
@@ -39,7 +30,7 @@ passport.use(
                 if (err) {
                     return done(err);
                 } else if (result) {
-                    return done(null, row);
+                    return done(null, { username: row.username, id: row.athlete_id });
                 } else {
                     return done(null, false, { message: "Incorrect Password" });
                 }

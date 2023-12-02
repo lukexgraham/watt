@@ -1,7 +1,16 @@
 import pkg from "pg";
 const { Pool } = pkg;
+import dotenv from "dotenv";
 
-const pool = new Pool({ user: "postgres", host: "localhost", database: "wattsplease", password: "logmeinplease", port: 5432 });
+dotenv.config();
+
+const pool = new Pool({
+    user: process.env.PG_USERNAME,
+    host: process.env.PG_HOST,
+    database: process.env.PG_DBNAME,
+    password: process.env.PG_PASSWORD,
+    port: process.env.PG_PORT,
+});
 
 export const query = async (text, params) => {
     const start = Date.now();

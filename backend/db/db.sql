@@ -10,9 +10,9 @@ CREATE TABLE users (
 );
 
 CREATE TABLE posts (
-    post_id INT GENERATED ALWAYS AS IDENTITY,
-    strava_id SMALLINT
-    athlete_id INT,
+    post_id SERIAL PRIMARY KEY,
+    strava_id BIGINT,
+    athlete_id INT NOT NULL,
     activity_name VARCHAR(32) NOT NULL,
     location_country VARCHAR(64),
     start_date DATE,
@@ -25,18 +25,18 @@ CREATE TABLE posts (
 );
 
 CREATE TABLE streams (
-    stream_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+    stream_id SERIAL PRIMARY KEY,
     post_id INT,
-    coords VARCHAR(25) [],
+    coords VARCHAR(50) [],
     elevation INT [],
     power SMALLINT [],
     hr SMALLINT [],
-    time DATE [],
+    time VARCHAR[30],
     cadence SMALLINT [],
     CONSTRAINT fk_post
       FOREIGN KEY(post_id)
       REFERENCES posts(post_id)
-)
+);
 
 INSERT INTO posts (athlete_id, activity_name, activity_date, distance) VALUES (1, 'Jog to the shops', '2023-11-09', 7);
 

@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../App";
 import Loading from "../components/Loading";
 
+const API_URL = import.meta.env.VITE_API_URL || "";
+
 const UserList = () => {
     const [users, setUsers] = useState([]);
     const { user } = useAuth();
@@ -14,7 +16,7 @@ const UserList = () => {
     useEffect(() => {
         const getUsers = async () => {
             try {
-                const response = await fetch("/api/athlete/users", {
+                const response = await fetch(API_URL + "/api/athlete/users", {
                     method: "GET",
                 });
                 if (!response.ok) throw new Error();
@@ -34,7 +36,7 @@ const UserList = () => {
 
     const handleFollow = async (targetID: any) => {
         try {
-            const response = await fetch(`/api/athlete/${user.id}/follow/${targetID}`, {
+            const response = await fetch(API_URL + `/api/athlete/${user.id}/follow/${targetID}`, {
                 method: "POST",
             });
 
@@ -53,7 +55,7 @@ const UserList = () => {
 
     const handleUnfollow = async (targetID: any) => {
         try {
-            const response = await fetch(`/api/athlete/${user.id}/unfollow/${targetID}`, {
+            const response = await fetch(API_URL + `/api/athlete/${user.id}/unfollow/${targetID}`, {
                 method: "POST",
             });
 
@@ -111,7 +113,7 @@ const UserList = () => {
     };
     return (
         <>
-            <div className="container">{loading ? <Loading /> : <UserList />}</div>
+            <div className="container">{loading ? <Loading size="40px" /> : <UserList />}</div>
         </>
     );
 };
