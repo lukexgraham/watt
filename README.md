@@ -22,7 +22,7 @@ The Minimum Viable Product for this website ecompasses the following:
 2. Activity Posting
 
     1. Create activity post, either manually or through reading uploaded GPS data.
-    2. Store user posts in postgres table for alter retrieval.
+    2. Store user posts in postgres table for later retrieval.
     3. delete or update post after posting.
 
 3. Following System
