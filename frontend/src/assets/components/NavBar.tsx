@@ -2,7 +2,7 @@ import { useAuth } from "../../App";
 import * as onClicks from "../utils/onClicks";
 import { useNavigate, Link } from "react-router-dom";
 import { IoMdMenu } from "react-icons/io";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const NavBar = () => {
     const { user, logout } = useAuth();
@@ -12,6 +12,10 @@ const NavBar = () => {
     const handleDropdown = () => {
         setShowDropdown(!showDropdown);
     };
+
+    useEffect(() => {
+        setShowDropdown(false);
+    }, []);
 
     return (
         <nav id="navigation">
@@ -40,15 +44,20 @@ const NavBar = () => {
                 </div>
             </div>
             <div className={`dropdown-content ${showDropdown ? "show" : ""}`}>
-                <Link to={`../athletes/${user.id}`}>
+                <Link to={`../athletes/${user.id}`} onClick={handleDropdown}>
                     <span className="nav-item">profile</span>
                 </Link>
-                <Link to={"../users"}>
+                <Link to={"../users"} onClick={handleDropdown}>
                     <span className="nav-item">users</span>
                 </Link>
-                <Link to={"../upload"}>
+                <Link to={"../upload"} onClick={handleDropdown}>
                     <span className="nav-item">upload</span>
                 </Link>
+                {user.id ? (
+                    <span className="nav-item" onClick={() => onClicks.handleLogout(logout, navigate)}>
+                        logout
+                    </span>
+                ) : null}
             </div>
         </nav>
     );

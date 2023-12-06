@@ -143,23 +143,23 @@ const CreateActivity = () => {
                             </select>
                         </>
                     )}
+                    <div className="gps-file">
+                        <input type="file" onChange={handleFileChange} value={gpsFileName} />
+                        {gpsFile && (
+                            <button
+                                onClick={() => {
+                                    setGpsFile(null);
+                                    setGpsFileName("");
+                                }}
+                            >
+                                X
+                            </button>
+                        )}
+                    </div>
                     <button onClick={handleUpload} disabled={status === "submitting"}>
                         upload
                     </button>
                     {status === "submitting" && <Loading size={"40px"} />}
-                </div>
-                <div className="gps-file">
-                    <input type="file" onChange={handleFileChange} value={gpsFileName} />
-                    {gpsFile && (
-                        <button
-                            onClick={() => {
-                                setGpsFile(null);
-                                setGpsFileName("");
-                            }}
-                        >
-                            X
-                        </button>
-                    )}
                 </div>
             </div>
         </>

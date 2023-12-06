@@ -10,6 +10,7 @@ const pool = new Pool({
     database: process.env.PG_DBNAME,
     password: process.env.PG_PASSWORD,
     port: process.env.PG_PORT,
+    
 });
 
 export const query = async (text, params) => {
