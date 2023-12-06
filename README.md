@@ -1,5 +1,7 @@
 # Watt?
 
+![Feed Page](feed.png)
+
 Watt? is a social posting and data viewing app for your training.
 
 ## Technical Stack
@@ -34,3 +36,13 @@ The Minimum Viable Product for this website ecompasses the following:
 -   mapbox
 -   passport.js
 -   strava API
+
+## Product Gallery
+
+### Activity Page
+
+![Activity Page](activity.png)
+
+### Mobile View
+
+<img src="phone.png" width="200" >
