@@ -227,17 +227,29 @@ svg {
     color: var(--dark-colour);
 }
 
-.show {
-    max-height: 1000px;
+.error {
+    color: #fff;
+    transition: all 0.5s ease-in;
+    position: absolute;
+    top: 0;
+    margin: 20px 0;
+    padding: 4px 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 4px;
+}
+
+.error.show {
+    background-color: #ff7777;
 }
 
 .login {
-    margin: auto;
     display: flex;
     height: 100vh;
 }
 
 .login-box {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -246,7 +258,9 @@ svg {
     min-height: 400px;
     text-align: center;
     justify-content: center;
-    min-width: 400px;
+    min-width: 300px;
+    max-width: 400px;
+    width: 100%;
     border-radius: 10px;
 }
 
@@ -352,6 +366,13 @@ footer {
     text-align: center;
 }
 
+.profile-bar-head img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 40px;
+}
+
 .profile-bar-body {
     display: flex;
     flex-direction: row;
@@ -410,6 +431,8 @@ footer {
     margin-right: auto;
     max-height: 0;
     width: 100%;
+    max-width: 600px;
+    gap: 16px;
     transition: max-height 0.2s ease-in;
 }
 
@@ -428,7 +451,7 @@ footer {
     border: 1px solid #eee;
     transition: 0.15s ease-out;
     cursor: pointer;
-    flex: 1 1 0;
+    width: 100%;
 }
 
 .activity-thumbnail:hover {
@@ -437,23 +460,24 @@ footer {
 }
 
 .side {
-    min-width: 40px;
+    min-width: 50px;
     font-size: 14px;
     margin: 0 10px 0 0;
 }
 
 .side img {
     overflow: hidden;
-    width: 30px;
-    height: 30px;
-    border-radius: 15px;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 20px;
     margin: auto;
     display: block;
 }
 
 .sport-icon {
-    margin: auto;
-    text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
 .activity-head {
@@ -464,6 +488,7 @@ footer {
 .user-info {
     display: flex;
     flex-direction: column;
+    margin: auto 0;
 }
 
 .username {
@@ -529,6 +554,10 @@ span.activity-type {
     font-weight: bold;
 }
 
+.upload .error {
+    top: -40px;
+}
+
 .upload {
     margin: 40px auto;
     display: flex;
@@ -565,6 +594,23 @@ span.activity-type {
     margin: 20px 0 0 0;
     padding: 8px;
     width: fit-content;
+}
+
+.gps-file {
+    font-size: 14px;
+    padding: 10px 0;
+    border-top: solid 1px #777;
+    margin-top: 20px;
+}
+
+.gps-file p {
+    font-weight: 300;
+    padding: 8px 0;
+    color: #777;
+}
+
+.gps-file input {
+    padding: 0;
 }
 
 .activity-page {
@@ -839,7 +885,6 @@ p {
     padding: 0;
     margin: 0;
     color: grey;
-    font-size: 0.8em;
 }
 
 h3 {
@@ -847,6 +892,10 @@ h3 {
     font-size: 18px;
     padding: 0;
     margin: 0;
+}
+
+.show {
+    max-height: 1000px;
 }
 
 #map {

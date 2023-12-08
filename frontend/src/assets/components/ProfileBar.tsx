@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import * as utils from "../utils/dataFormatting";
+import defaultProfileImage from "../images/default_user.jpg";
 
 const API_URL = import.meta.env.VITE_API_URL || "";
 
@@ -54,6 +55,7 @@ const ProfileBar = ({ id }: { id: string }) => {
     return (
         <div className="profile-bar">
             <div className="profile-bar-head">
+                <img src={defaultProfileImage} alt="" />
                 <h2>{userStats.username}</h2>
             </div>
             <div className="profile-bar-body">

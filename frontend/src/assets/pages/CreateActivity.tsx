@@ -8,8 +8,8 @@ const API_URL = import.meta.env.VITE_API_URL || "";
 const CreateActivity = () => {
     const { user } = useAuth();
     const [formData, setFormData] = useState({
-        distance: "",
-        duration: "",
+        distance: 0,
+        duration: 0,
         title: "",
         type: "",
         location: "United Kingdom",
@@ -45,6 +45,22 @@ const CreateActivity = () => {
 
     const handleUpload = async () => {
         try {
+            // Form validation
+            if (formData.title == "") {
+                setErrorMessage("Please enter an activity name.");
+                return;
+            }
+            if ((formData.duration == 0 || isNaN(formData.duration)) && gpsFile == null) {
+                console.log(formData.duration);
+                setErrorMessage("Please enter a valid activity duration.");
+                return;
+            }
+            if (isNaN(formData.distance)) {
+                setErrorMessage("Please enter a valid distance.");
+                return;
+            }
+            console.log(formData.distance);
+
             setStatus("submitting");
 
             const gpsOptions: [string, object] = [
@@ -144,6 +160,7 @@ const CreateActivity = () => {
                         </>
                     )}
                     <div className="gps-file">
+                        {gpsFile == null && <p>Or Submit a GPX file</p>}
                         <input type="file" onChange={handleFileChange} value={gpsFileName} />
                         {gpsFile && (
                             <button
@@ -161,6 +178,7 @@ const CreateActivity = () => {
                     </button>
                     {status === "submitting" && <Loading size={"40px"} />}
                 </div>
+                <span className={"error " + (errorMessage ? "show" : "")}>{errorMessage}</span>
             </div>
         </>
     );

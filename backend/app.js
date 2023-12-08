@@ -10,7 +10,7 @@ import activity from "./routes/activity.js";
 const app = express();
 dotenv.config();
 
-const port = process.env.SERVER_PORT;
+const port = process.env.SERVER_PORT || 3000;
 
 app.use(cors({ credentials: true }));
 

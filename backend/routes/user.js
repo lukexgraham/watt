@@ -60,7 +60,7 @@ async function getStravaActivities(num) {
 router.get("/:id/stats", async (req, res) => {
     try {
         const athlete_id = req.params.id;
-        const query = `SELECT u.username, u.athlete_id, COALESCE(array_length(u.followers, 1), 0) AS follower_count, COALESCE(array_length(u.following, 1), 0) AS following_count, COUNT(p.*) AS post_count, COALESCE(SUM(p.distance), 0) AS total_distance, COALESCE(SUM(p.duration), 0) AS total_duration, MAX(p.start_date) AS latest_activity_start_date, MAX(p.activity_name) AS latest_activity_name FROM users u LEFT JOIN posts p ON u.athlete_id = p.athlete_id WHERE u.athlete_id = $1 GROUP BY u.username, u.athlete_id, u.followers, u.following ORDER BY latest_activity_start_date DESC;`;
+        const query = `SELECT u.username, u.athlete_id, COALESCE(array_length(u.followers, 1), 0) AS follower_count, COALESCE(array_length(u.following, 1), 0) AS following_count, COUNT(p.*) AS post_count, COALESCE(SUM(p.distance), 0) AS total_distance, COALESCE(SUM(p.duration), 0) AS total_duration, MAX(p.start_date) AS latest_activity_start_date, (SELECT p1.activity_name FROM posts p1 WHERE u.athlete_id = p1.athlete_id AND p1.start_date = MAX(p.start_date) LIMIT 1) AS latest_activity_name FROM users u LEFT JOIN posts p ON u.athlete_id = p.athlete_id WHERE u.athlete_id = $1 GROUP BY u.username, u.athlete_id, u.followers, u.following ORDER BY latest_activity_start_date DESC;`;
         const params = [athlete_id];
         const response = await db.query(query, params);
 

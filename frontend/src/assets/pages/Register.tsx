@@ -6,6 +6,7 @@ const API_URL = import.meta.env.VITE_API_URL || "";
 
 const Register: any = ({ getFeed }: any) => {
     const [formData, setFormData] = useState({ username: "", password: "" });
+    const [errorMessage, setErrorMessage] = useState<string>("");
     const navigate = useNavigate();
 
     const handleRegistration = async () => {
@@ -21,19 +22,14 @@ const Register: any = ({ getFeed }: any) => {
                 }),
             });
 
-            if (response.ok) {
-                const responseData = await response.json();
-                if (responseData.success) {
-                    console.log(responseData.message);
-                    navigate("../login");
-                } else {
-                    console.log(responseData.message);
-                }
-            } else {
-                console.log("didnt reach");
-            }
+            if (!response.ok) throw new Error();
+            const responseData = await response.json();
+
+            if (responseData.success) {
+                navigate("../login");
+            } else throw new Error(responseData.error);
         } catch (error) {
-            console.log(error);
+            setErrorMessage("Username already taken");
         }
     };
 
@@ -66,6 +62,7 @@ const Register: any = ({ getFeed }: any) => {
                                 value={formData.password}
                                 onChange={handleInputChange}
                             />
+                            <span className={"error " + (errorMessage ? "show" : "")}>{errorMessage}</span>
                         </div>
                         <button onClick={handleRegistration}>submit</button>
                         <Link to={"/login"}>login</Link>

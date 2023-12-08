@@ -38,7 +38,7 @@ const Login: any = () => {
                 navigate(`../athletes/${responseData.data.id}`);
             } else throw new Error(responseData.error);
         } catch (error) {
-            setErrorMessage("Error with login");
+            setErrorMessage("Incorrect username or password");
             setStatus("");
         }
     };
@@ -65,7 +65,7 @@ const Login: any = () => {
                             placeholder="password"
                             onChange={handleInputChange}
                         />
-                        {errorMessage !== null && <span className="error">{errorMessage}</span>}
+                        <span className={"error " + (errorMessage ? "show" : "")}>{errorMessage}</span>
                     </div>
                     <button onClick={handleLogin} disabled={status === "submitting"}>
                         submit

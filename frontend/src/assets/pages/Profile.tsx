@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import ProfileBar from "../components/ProfileBar";
 import { useState } from "react";
 import { useAuth } from "../../App";
+import Loading from "../components/Loading";
 
 const Profile: any = () => {
     const { id } = useParams<{ id: string }>();

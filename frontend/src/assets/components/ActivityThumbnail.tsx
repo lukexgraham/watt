@@ -1,5 +1,6 @@
 import * as utils from "../utils/dataFormatting";
 import { useNavigate } from "react-router-dom";
+import defaultProfileImage from "../images/default_user.jpg";
 
 const ActivityThumbnail = ({ activity }) => {
     const navigate = useNavigate();
@@ -12,7 +13,7 @@ const ActivityThumbnail = ({ activity }) => {
         <div id={activity.post_id} className="activity-thumbnail" onClick={() => handleActivitySelect(activity.post_id)}>
             <div className="activity-head">
                 <div className="side">
-                    <img src="https://d3d00swyhr67nd.cloudfront.net/w800h800/collection/BBO/MERL/BBO_MERL_M_20-001.jpg" alt="" />
+                    <img src={defaultProfileImage} alt="" />
                 </div>
                 <div className="user-info">
                     <span className="username">{activity.username}</span>

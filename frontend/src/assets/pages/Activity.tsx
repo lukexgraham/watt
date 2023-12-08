@@ -27,6 +27,21 @@ const Activity = () => {
             bounds.extend(coord);
         }
 
+        const fBounds = [bounds._sw.lng, bounds._sw.lat, bounds._ne.lng, bounds._ne.lat];
+        const stringGeoJson = JSON.stringify(geoJson).replace(/"/g, "");
+
+        const customStringify = (key, value) => {
+            if (key === "type" && typeof value === "string") {
+                // Avoid adding extra quotes for 'type' key
+                return value;
+            } else if (key === "coordinates" && Array.isArray(value)) {
+                // Keep coordinates without quotation marks and square brackets
+                return value.map((coord) => coord.join(",")).join(",");
+            }
+            // Quote all other keys and string values
+            return typeof value === "string" ? `"${value}"` : value;
+        };
+
         map.current = new mapboxgl.Map({
             container: mapContainer.current,
             style: "mapbox://styles/mapbox/satellite-v9",
